@@ -1,0 +1,6 @@
+# Temporary overrides used by the manual walkthrough (see README).
+services:
+  wafer-api:
+    environment:
+      RECOMPUTE_DELAY_SECONDS: "0.5"
+      SCHEDULER_WORKERS: "1"

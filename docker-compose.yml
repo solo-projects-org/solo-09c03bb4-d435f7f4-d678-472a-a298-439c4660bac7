@@ -1,0 +1,27 @@
+services:
+  wafer-api:
+    build: .
+    image: wafer-probe-map:1.0.0
+    ports:
+      - "8000:8000"
+    environment:
+      WAFER_DB_PATH: /data/wafer.db
+      SCHEDULER_WORKERS: "2"
+    volumes:
+      - wafer-data:/data
+    restart: unless-stopped
+    healthcheck:
+      test:
+        - CMD
+        - python
+        - -c
+        - >-
+          import urllib.request,sys;
+          sys.exit(0 if urllib.request.urlopen('http://127.0.0.1:8000/healthz', timeout=2).status == 200 else 1)
+      interval: 10s
+      timeout: 3s
+      retries: 5
+      start_period: 5s
+
+volumes:
+  wafer-data:
